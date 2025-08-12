@@ -1,43 +1,35 @@
-# TerraCoder Web
+## Terraform Generator for AWS (DeepSeek)
 
-A minimal Flask web application to generate Terraform code using the DeepSeek API.
+Generate production-ready Terraform (HCL) for AWS services using a simple web UI backed by the DeepSeek API.
 
-## Quick start (local)
+### Prerequisites
+- Node.js 18+
+- A DeepSeek API key
 
-1. Python 3.10+
-2. Install deps:
-
+### Setup
+1. Install dependencies:
 ```bash
-pip install -r requirements.txt
+npm install
+```
+2. Configure environment:
+```bash
+cp .env.example .env
+# Edit .env and set DEEPSEEK_API_KEY
 ```
 
-3. Set your API key (any of these):
-
-- Env var: `export DEEPSEEK_API_KEY=your_key`
-- File: `webapp/config.json` with `{"api_key": "your_key"}`
-- File: `tera/config.json` or `~/.teracoder.json` with `{"DEEPSEEK_API_KEY": "your_key"}`
-- Hardcode: set `HARDCODED_DEEPSEEK_API_KEY` env var
-
-4. Run the app:
-
+### Run
 ```bash
-python webapp/app.py
+npm start
 ```
+Open `http://localhost:3000` in your browser.
 
-Open `http://localhost:8000`.
+### Notes
+- The Additional configuration field accepts either JSON or `key=value` pairs (one per line). Basic types are inferred.
+- The backend prompts the model to output only Terraform HCL suitable for a single `main.tf` file.
+- A copy and a download button are provided to use the generated code directly.
 
-## Docker
+### Security
+- The API key is read from server-side environment variables and never exposed to the client.
 
-```bash
-docker build -t terracoder-web .
-docker run -p 8000:8000 -e DEEPSEEK_API_KEY=your_key terracoder-web
-```
-
-## Deploy
-
-Deploy anywhere that can run a container (Fly.io, AWS App Runner, Cloud Run, Azure App Service, Heroku via container, etc.).
-
-## Notes
-
-- Optional: Check "Run terraform validate" to validate generated code if the server has `terraform` installed.
-- Defaults: model `deepseek-chat`, temperature `0.0`, max tokens `1200`.
+### Disclaimer
+- Always review generated infrastructure-as-code before applying it in production.
