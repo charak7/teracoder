@@ -1,22 +1,4 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Env
+node_modules
 .env
-.venv/
-
-# Editor
-.vscode/
-.idea/
-
-# Terraform temp
-.terraform/
-**/.terraform/*
-*.tfstate
-*.tfstate.*
-
-# App
-webapp/config.json
-tera/config.json
+npm-debug.log*
+.DS_Store

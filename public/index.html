@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terraform Generator for AWS (DeepSeek)</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Terraform Generator for AWS</h1>
+      <p>Powered by DeepSeek API</p>
+    </header>
+
+    <form id="gen-form">
+      <div class="grid">
+        <label>
+          <span>AWS Service</span>
+          <select name="service" required>
+            <option value="ec2">EC2</option>
+            <option value="s3">S3</option>
+            <option value="rds">RDS</option>
+            <option value="lambda">Lambda</option>
+            <option value="vpc">VPC</option>
+            <option value="eks">EKS</option>
+            <option value="ecs">ECS</option>
+            <option value="iam">IAM</option>
+            <option value="cloudfront">CloudFront</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Region</span>
+          <input name="region" placeholder="us-east-1" value="us-east-1" required />
+        </label>
+
+        <label>
+          <span>Resource name (base)</span>
+          <input name="resourceName" placeholder="my-service" required />
+        </label>
+      </div>
+
+      <label class="block">
+        <span>Additional configuration (JSON or key=value per line)</span>
+        <textarea name="additionalConfigText" placeholder='{"instance_type":"t3.micro","bucket_policy":"private"}\nor\ninstance_type=t3.micro\npublic_subnets=true' rows="8"></textarea>
+      </label>
+
+      <div class="actions">
+        <button id="generate" type="submit">Generate Terraform</button>
+        <button id="clear" type="button" class="secondary">Clear</button>
+      </div>
+    </form>
+
+    <section id="result-section" class="hidden">
+      <div class="result-header">
+        <h2>Generated main.tf</h2>
+        <div class="result-actions">
+          <button id="copy">Copy</button>
+          <button id="download">Download main.tf</button>
+        </div>
+      </div>
+      <pre id="code"></pre>
+    </section>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
