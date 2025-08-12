@@ -23,6 +23,27 @@ npm start
 ```
 Open `http://localhost:3000` in your browser.
 
+### REST API
+- **POST/PUT** `/api/generate`
+  - **Body (JSON)**:
+    - `service` (string) – e.g., `ec2`, `s3`, `rds`, `lambda`, `vpc`
+    - `region` (string) – e.g., `us-east-1`
+    - `resourceName` (string) – base name used for tags and resource names
+    - `additionalConfigText` (string, optional) – JSON or `key=value` per line
+  - **Response**: `{ code: "...terraform hcl..." }`
+
+Example with PUT:
+```bash
+curl -X PUT http://localhost:3000/api/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "service": "ec2",
+    "region": "us-east-1",
+    "resourceName": "demo-ec2",
+    "additionalConfigText": "instance_type=t3.micro\npublic_ip=true"
+  }'
+```
+
 ### Notes
 - The Additional configuration field accepts either JSON or `key=value` pairs (one per line). Basic types are inferred.
 - The backend prompts the model to output only Terraform HCL suitable for a single `main.tf` file.

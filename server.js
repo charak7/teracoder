@@ -70,7 +70,7 @@ Deliver a complete, self-contained main.tf with provider, variables (with defaul
   return instructions;
 }
 
-app.post('/api/generate', async (req, res) => {
+async function generateHandler(req, res) {
   try {
     if (!DEEPSEEK_API_KEY) {
       return res.status(500).json({ error: 'Server not configured: missing DEEPSEEK_API_KEY' });
@@ -121,7 +121,10 @@ app.post('/api/generate', async (req, res) => {
     const data = error?.response?.data;
     res.status(status).json({ error: 'Failed to generate Terraform code', details: data || error.message });
   }
-});
+}
+
+app.post('/api/generate', generateHandler);
+app.put('/api/generate', generateHandler);
 
 app.get('/health', (_req, res) => {
   res.json({ ok: true });
