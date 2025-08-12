@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TerraCoder Web</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TerraCoder Web</h1>
+      <p>Generate Terraform code using DeepSeek</p>
+    </header>
+
+    {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/generate" class="card">
+      <div class="field">
+        <label for="prompt">Prompt</label>
+        <textarea id="prompt" name="prompt" rows="6" placeholder="Describe the Terraform you want..." required>{{ prompt_value or '' }}</textarea>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="api_key">API Key (optional)</label>
+          <input id="api_key" name="api_key" type="password" placeholder="Override or leave blank to use env/config" />
+        </div>
+        <div class="field">
+          <label for="model">Model</label>
+          <input id="model" name="model" type="text" value="{{ model_value or default_model }}" />
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="temperature">Temperature</label>
+          <input id="temperature" name="temperature" type="number" step="0.1" min="0" max="2" value="{{ temperature_value or '0.0' }}" />
+        </div>
+        <div class="field">
+          <label for="max_tokens">Max tokens</label>
+          <input id="max_tokens" name="max_tokens" type="number" min="1" max="4096" value="{{ max_tokens_value or '1200' }}" />
+        </div>
+      </div>
+
+      <div class="field checkbox">
+        <label>
+          <input type="checkbox" name="validate" /> Run terraform validate (if available)
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn">Generate</button>
+      </div>
+    </form>
+
+    {% if generated %}
+      <section class="card">
+        <div class="actions right">
+          <form method="post" action="/download">
+            <input type="hidden" name="generated" value="{{ generated|e }}" />
+            <button type="submit" class="btn">Download main.tf</button>
+          </form>
+        </div>
+        <h2>Generated Terraform</h2>
+        <pre><code>{{ generated }}</code></pre>
+
+        {% if validation_output %}
+          <h3>Validation Output</h3>
+          <pre><code>{{ validation_output }}</code></pre>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <footer>
+      <small>Model default: {{ default_model }}</small>
+    </footer>
+  </div>
+</body>
+</html>
